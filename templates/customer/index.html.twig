@@ -9,6 +9,21 @@
 </style>
 
 <script>
+
+console.log(sessionStorage.getItem('total'));
+console.log(sessionStorage.getItem('order'));
+
+var thisOrder = sessionStorage.getItem('order').split(',');
+$(document).ready(function(){
+	if(thisOrder){
+		$.each(thisOrder, function(index ,value){
+            $("#cart-wrapper").append('<p>' + value + '</p>');
+            $('#basket-total').html('Total : €' + sessionStorage.getItem('total') );
+        });
+	}
+})
+
+
 $.post("/DatabaseData").done(function(data){
 	$('#products-wrapper').html(data);
 
@@ -16,10 +31,10 @@ $.post("/DatabaseData").done(function(data){
                     $('.plus').on('click', function(event){
                     var q = $(this).closest('tr').find('.qty-box').val();
                     q++;
-                    console.log(q);
+                    //console.log(q);
                     $(this).closest('tr').find('.qty-box').val(q);
                     var t = $(this).closest('tr').find('.price').attr('value');
-                    console.log(t);
+                    //console.log(t);
                     var sum = q * t;
                     $(this).closest('tr').find('.total-price').val(sum);
 
@@ -27,7 +42,7 @@ $.post("/DatabaseData").done(function(data){
                     var total_price = 0;
                     $(".total-price").each(function(){ 
                       total_price += parseFloat($(this).val()); 
-                      console.log(total_price);
+                      //console.log(total_price);
                       });
                       $('#total-sum').val(total_price); 
                     })
@@ -37,17 +52,17 @@ $.post("/DatabaseData").done(function(data){
                     var x = $(this).closest('tr').find('.qty-box').val();
                     if(x > 0){
                     x--;
-                    console.log(x);
+                    //console.log(x);
                     $(this).closest('tr').find('.qty-box').val(x);
                     var r = $(this).closest('tr').find('.price').attr('value');
-                    console.log(r);
+                    //console.log(r);
                     var sum = x * r;
                     $(this).closest('tr').find('.total-price').val(sum);
 
                     var total_price = 0;
                     $(".total-price").each(function(){ 
                       total_price += parseFloat($(this).val()); 
-                      console.log(total_price);
+                      //console.log(total_price);
                       });
                       $('#total-sum').val(total_price);
 
@@ -55,13 +70,74 @@ $.post("/DatabaseData").done(function(data){
                     
                     })
 });
+
+
+	function addToCart(){
+		var total = $('#total-sum').val();
+
+		var tempOrder = [];
+		$('.qty-box').each(function()
+		{
+            var z = $(this).val();
+
+            if(z > 0)
+            {
+            	var e = $(this).closest('tr').find('.p-title').html();
+            	tempOrder.push(e + ' x ' + z);
+         	}
+
+		});
+		console.log(tempOrder);
+		console.log('total:' + total);
+
+		sessionStorage.setItem('total',total);
+		sessionStorage.setItem('order',tempOrder);
+
+		var basketOrder = sessionStorage.getItem('order').split(',');
+		sessionStorage.setItem('cartOrder',basketOrder);
+
+		console.log(sessionStorage.getItem('order'));
+		var splitOrder = sessionStorage.getItem('order').split(',');
+		//$('#cart-wrapper').html(splitOrder);
+		$('#basket-total').html('€' + sessionStorage.getItem('total'));
+
+		$('#cart-wrapper').html('');
+		$.each(basketOrder, function(index ,value){
+            $("#cart-wrapper").append('<p>' + value + '</p>');
+        });
+
+	}
+
+	function updateCart(){
+		
+		//$('#cart-wrapper').html(sessionStorage.getItem('order').split(','));
+		//$('#basket-total').html('Total : €' + sessionStorage.getItem('total'));
+	}
+
+
 </script>
+<div data-role="page" id="order">
+	<div class="example-wrapper">
+    	<h1>Hello {{ controller_name }}! ✅</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    <div id="products-wrapper">
-
-    </div>
+    	<div id="products-wrapper"></div>
+    	<button id="addToCart" onclick="addToCart()">Add to Cart</button>
+    	<a href="/Customer#basket" onclick="updateCart()">View Basket</a>
+	</div>
 </div>
+
+<!-- Start of first page -->
+<div data-role="page" id="basket">
+	<div class="example-wrapper">
+
+		<div role="main" class="ui-content">
+			<h1>Your Basket</h1>
+			<div id="cart-wrapper"></div>
+			<p id="basket-total"></p>
+			<a href="/Customer">Back to Order</a>
+		</div>
+		<!-- /content -->
+	</div>
+</div>
+<!-- /page --> 
 {% endblock %}

@@ -32,7 +32,7 @@ class DatabaseData extends AbstractController
         foreach($products as $obj)
         {
             echo 		'<tr>
-        					<td>'.$obj->getPTitle().'</td>
+        					<td class="p-title">'.$obj->getPTitle().'</td>
         					<td>
         						<button class="min ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-btn-icon-notext  ui-icon-minus">minus</button>
         					</td>
