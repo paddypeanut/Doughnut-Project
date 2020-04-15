@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CustomerController!{% endblock %}
+{% block title %}Customer!{% endblock %}
 
 {% block body %}
 <style>
@@ -8,13 +8,60 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
+<script>
+$.post("/DatabaseData").done(function(data){
+	$('#products-wrapper').html(data);
+
+	// when the + button is clicked increase the value in the closest input
+                    $('.plus').on('click', function(event){
+                    var q = $(this).closest('tr').find('.qty-box').val();
+                    q++;
+                    console.log(q);
+                    $(this).closest('tr').find('.qty-box').val(q);
+                    var t = $(this).closest('tr').find('.price').attr('value');
+                    console.log(t);
+                    var sum = q * t;
+                    $(this).closest('tr').find('.total-price').val(sum);
+
+
+                    var total_price = 0;
+                    $(".total-price").each(function(){ 
+                      total_price += parseFloat($(this).val()); 
+                      console.log(total_price);
+                      });
+                      $('#total-sum').val(total_price); 
+                    })
+
+                    // minus button, decrease the value in the nearest input field
+                    $('.min').on('click', function(event){
+                    var x = $(this).closest('tr').find('.qty-box').val();
+                    if(x > 0){
+                    x--;
+                    console.log(x);
+                    $(this).closest('tr').find('.qty-box').val(x);
+                    var r = $(this).closest('tr').find('.price').attr('value');
+                    console.log(r);
+                    var sum = x * r;
+                    $(this).closest('tr').find('.total-price').val(sum);
+
+                    var total_price = 0;
+                    $(".total-price").each(function(){ 
+                      total_price += parseFloat($(this).val()); 
+                      console.log(total_price);
+                      });
+                      $('#total-sum').val(total_price);
+
+                    }
+                    
+                    })
+});
+</script>
+
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/grahamsmithers/Desktop/project-doughnut/doughnut-website/src/Controller/CustomerController.php'|file_link(0) }}">src/Controller/CustomerController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/grahamsmithers/Desktop/project-doughnut/doughnut-website/templates/customer/index.html.twig'|file_link(0) }}">templates/customer/index.html.twig</a></code></li>
-    </ul>
+    <div id="products-wrapper">
+
+    </div>
 </div>
 {% endblock %}
