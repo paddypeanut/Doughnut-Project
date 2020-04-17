@@ -31,6 +31,12 @@
                 window.location="/Driver"
             }
 			});
+
+
+
+			$.post("/GetUserId", {un: uname}).done(function(data){
+			localStorage.setItem('user_id', data)
+			});
 	}
 
 	//register function

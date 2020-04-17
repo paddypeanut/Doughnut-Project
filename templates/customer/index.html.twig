@@ -8,21 +8,78 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
+
+<div data-role="page" id="order">
+	<div class="example-wrapper">
+    	<h1>Hello {{ controller_name }}! ✅</h1>
+
+    	<div id="products-wrapper"></div>
+    	<button id="addToCart" onclick="addToCart()">Add to Cart</button>
+    	<a href="/Customer#basket">View Basket</a>
+	</div>
+</div>
+
+<!-- Start of first page -->
+<div data-role="page" id="basket">
+	<div class="example-wrapper">
+
+		<div role="main" class="ui-content">
+			<h1>Your Basket</h1>
+			<div id="cart-wrapper"></div>
+			<p id="basket-total"></p>
+			<a href="/Customer">Back to Order</a>
+			<a href="/Customer#checkout">Go to Checkout</a>
+		</div>
+		<!-- /content -->
+	</div>
+</div>
+
+
+<div data-role="page" id="checkout">
+	<div class="example-wrapper">
+
+		<div role="main" class="ui-content">
+			<h1>Checkout</h1>
+			<div class="ui-grid-a" id="checkout-wrapper">
+
+				<div class="ui-block-a" id="address-wrapper">
+					<div class="ui-bar ui-bar-a">
+						<label for="text-basic">Address Line 1 :</label>
+						<input type="text" name="add1" id="add1" value="">
+
+						<label for="text-basic">Address Line 2 :</label>
+						<input type="text" name="add2" id="add2" value="">
+
+						<label for="text-basic">Address Line 3 :</label>
+						<input type="text" name="add3" id="add3" value="">
+
+						<label for="text-basic">Eircode :</label>
+						<input type="text" name="eircode" id="eircode" value="">
+
+						<label for="text-basic">Phone Number :</label>
+						<input type="text" name="phone-num" id="phone-num" value="">
+					</div>
+				</div>
+
+				<div class="ui-block-b" id="checkout-order">
+					<div class="ui-bar ui-bar-a">
+						<div id="checkout-contents"></div>
+					</div>
+				</div>
+
+			</div>
+			<p id="checkout-total">Total: </p>
+			<button id="complete-order" onclick="completeOrder()">Complete Order</button>
+
+			<a href="/Customer">Back to Order</a>
+			<a href="/Customer#basket">Go to Basket</a>
+		</div>
+		<!-- /content -->
+	</div>
+</div>
 <script>
-
-console.log(sessionStorage.getItem('total'));
-console.log(sessionStorage.getItem('order'));
-
-var thisOrder = sessionStorage.getItem('order').split(',');
-$(document).ready(function(){
-	if(thisOrder){
-		$.each(thisOrder, function(index ,value){
-            $("#cart-wrapper").append('<p>' + value + '</p>');
-            $('#basket-total').html('Total : €' + sessionStorage.getItem('total') );
-        });
-	}
-})
-
+var user_id = localStorage.getItem('user_id');
+console.log(user_id);
 
 $.post("/DatabaseData").done(function(data){
 	$('#products-wrapper').html(data);
@@ -72,6 +129,8 @@ $.post("/DatabaseData").done(function(data){
 });
 
 
+
+
 	function addToCart(){
 		var total = $('#total-sum').val();
 
@@ -100,44 +159,35 @@ $.post("/DatabaseData").done(function(data){
 		var splitOrder = sessionStorage.getItem('order').split(',');
 		//$('#cart-wrapper').html(splitOrder);
 		$('#basket-total').html('€' + sessionStorage.getItem('total'));
+		$('#checkout-total').html('€' + sessionStorage.getItem('total'));
 
 		$('#cart-wrapper').html('');
+		$('#checkout-contents').html('');
 		$.each(basketOrder, function(index ,value){
             $("#cart-wrapper").append('<p>' + value + '</p>');
+            $("#checkout-contents").append('<p>' + value + '</p>');
         });
 
 	}
 
-	function updateCart(){
-		
-		//$('#cart-wrapper').html(sessionStorage.getItem('order').split(','));
-		//$('#basket-total').html('Total : €' + sessionStorage.getItem('total'));
-	}
+	      
 
+function completeOrder(){
+	
+	var add1 = $('#add1').val();
+	var add2 = $('#add2').val();
+	var add3 = $('#add3').val();
+	var eircode = $('#eircode').val();
+	var phone = $('#phone-num').val();
+
+	console.log(add1 + ' ' + add2 +' ' + add3 + ' ' +eircode +' ' +  phone);
+
+	$.post("/CompleteOrder").done(function(data){
+
+
+	});	
+}
 
 </script>
-<div data-role="page" id="order">
-	<div class="example-wrapper">
-    	<h1>Hello {{ controller_name }}! ✅</h1>
-
-    	<div id="products-wrapper"></div>
-    	<button id="addToCart" onclick="addToCart()">Add to Cart</button>
-    	<a href="/Customer#basket" onclick="updateCart()">View Basket</a>
-	</div>
-</div>
-
-<!-- Start of first page -->
-<div data-role="page" id="basket">
-	<div class="example-wrapper">
-
-		<div role="main" class="ui-content">
-			<h1>Your Basket</h1>
-			<div id="cart-wrapper"></div>
-			<p id="basket-total"></p>
-			<a href="/Customer">Back to Order</a>
-		</div>
-		<!-- /content -->
-	</div>
-</div>
 <!-- /page --> 
 {% endblock %}

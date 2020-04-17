@@ -66,17 +66,11 @@ class LoginRegisterData extends AbstractController
                 $repository = $this->getDoctrine()->getRepository(Users::class);
 
           
-                $user = $repository->findOneBy(['username' => $name]);
+                $user = $repository->findOneBy(['username' => $name , 'password' => $pass]);
 
                 if($user)
                 {   
-                    $user_id = $user->getId();
-                    $session = new Session();
-                    $session->start();
-                    $session->set('username', $name);
-                    $session->set('user_id', $user_id);
-
-
+                   
                     return new Response(
 
                      $user->getAccType()
