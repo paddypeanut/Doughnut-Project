@@ -20,21 +20,37 @@ class CompleteOrder extends AbstractController
     {
         $request = Request::createFromGlobals(); // the envelope, and were looking inside it.
 
-        $name = $request->request->get('un', 'username');
+        $id = $request->request->get('id', 'user_id');
+        $completeOrder = $request->request->get('order','order');
+        $address = $request->request->get('add','address');
+        $total = $request->request->get('total','total');
+        $phone = $request->request->get('ph', 'Phone Number');
+
           
-        $repository = $this->getDoctrine()->getRepository(Users::class);
+         $entityManager = $this->getDoctrine()->getManager();
+
+                // create blank entity of type "Users"
+                $order = new Orders();
+        
+                $order->setUserId($id);
+                $order->setOrderContents($completeOrder);
+                $order->setTotalPrice($total);
+                $order->setStatus('preparing order');
+                $order->setDelAddress($address);
+                $order->setPhoneNumber($phone);
+
+                $entityManager->persist($order);
+
+                // actually executes the queries (i.e. the INSERT query)
+                $entityManager->flush();
   
-        $user = $repository->findOneBy(['username' => $name]);
+        
 
-        $id = $user->getId();
+        
 
-        if($id){
-            return new Response(
-                $id
-        );     
-        }
+        
        
-        return new Response( );
+        return new Response( 'order added');
 
 
     }

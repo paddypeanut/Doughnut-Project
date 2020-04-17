@@ -78,7 +78,7 @@
 	</div>
 </div>
 <script>
-var user_id = localStorage.getItem('user_id');
+var user_id =localStorage.getItem('user_id');
 console.log(user_id);
 
 $.post("/DatabaseData").done(function(data){
@@ -180,11 +180,13 @@ function completeOrder(){
 	var eircode = $('#eircode').val();
 	var phone = $('#phone-num').val();
 
-	console.log(add1 + ' ' + add2 +' ' + add3 + ' ' +eircode +' ' +  phone);
+	var address = add1 + ' ' + add2 +' ' + add3 + ' ' +eircode;
+	var orderTotal = sessionStorage.getItem('total');
+	var completeOrder = sessionStorage.getItem('order');
 
-	$.post("/CompleteOrder").done(function(data){
+	$.post("/CompleteOrder", {id: user_id , add: address, total: orderTotal,order:completeOrder, ph:phone}).done(function(data){
 
-
+	alert(data);
 	});	
 }
 
