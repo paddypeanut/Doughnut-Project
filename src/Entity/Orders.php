@@ -45,8 +45,20 @@ class Orders
      * @ORM\Column(type="string", length=255)
      */
     private $phone_number;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $delivered_by;
+
+   
+
 
     public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function getDeliveredBy(): ?string
     {
         return $this->id;
     }
@@ -69,6 +81,13 @@ class Orders
     public function setOrderContents(string $order_contents): self
     {
         $this->order_contents = $order_contents;
+
+        return $this;
+    }
+
+    public function setDeliveredBy(string $delivered_by): self
+    {
+        $this->delivered_by = $delivered_by;
 
         return $this;
     }

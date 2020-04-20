@@ -4,7 +4,7 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper { margin: 1em auto; max-width: 1024px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
@@ -77,9 +77,25 @@
 		<!-- /content -->
 	</div>
 </div>
+
+
+<!-- Start of first page -->
+<div data-role="page" id="previousorders">
+	<div class="example-wrapper">
+
+		<div role="main" class="ui-content">
+			<h1>Your Orders</h1>
+			<div id="pre-orders"></div>
+			
+		</div>
+		<!-- /content -->
+	</div>
+</div>
 <script>
 var user_id =localStorage.getItem('user_id');
 console.log(user_id);
+
+
 
 $.post("/DatabaseData").done(function(data){
 	$('#products-wrapper').html(data);
@@ -189,6 +205,10 @@ function completeOrder(){
 	alert(data);
 	});	
 }
+
+$.post("/PreviousOrders", {id:user_id}).done(function(data){
+	$('#pre-orders').html(data);
+});
 
 </script>
 <!-- /page --> 

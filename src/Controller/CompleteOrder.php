@@ -29,15 +29,16 @@ class CompleteOrder extends AbstractController
           
          $entityManager = $this->getDoctrine()->getManager();
 
-                // create blank entity of type "Users"
+                
                 $order = new Orders();
         
                 $order->setUserId($id);
                 $order->setOrderContents($completeOrder);
                 $order->setTotalPrice($total);
-                $order->setStatus('preparing order');
+                $order->setStatus('In Progress');
                 $order->setDelAddress($address);
                 $order->setPhoneNumber($phone);
+                $order->setDeliveredBy('0');
 
                 $entityManager->persist($order);
 

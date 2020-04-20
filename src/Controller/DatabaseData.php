@@ -22,7 +22,7 @@ class DatabaseData extends AbstractController
         	$repository = $this->getDoctrine()->getRepository(Products::class);
         	$products = $repository->findAll();
 
-        	echo '<table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive">
+        	echo '<table data-role="table" id="movie-table" data-mode="reflow" class="movei-list ui-responsive">
       					<tr>
       						<th data-priority="1">Product</th>
      						<th colspan="4" data-priority="2">Quantity</th>
