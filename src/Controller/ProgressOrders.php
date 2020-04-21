@@ -38,8 +38,8 @@ class ProgressOrders extends AbstractController
         {
             echo    '<tr class="single-order">
                         <td class="order-id">'.$obj->getId().'</td>
-                        <td>'.$obj->getOrderContents().'</td>
-                        <td>'.$obj->getDelAddress().'</td>
+                        <td class="wide-col format-text">'.$obj->getOrderContents().'</td>
+                        <td class="format-add-text wide-col">'.$obj->getDelAddress().'</td>
                         <td>'.$obj->getPhoneNumber().'</td>
                         <td>'.$obj->getTotalPrice().'</td>
                         <td class="order-status">'.$obj->getStatus().'</td>

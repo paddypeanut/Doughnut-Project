@@ -33,13 +33,14 @@ class AllOrders extends AbstractController
                             <th data-priority="4">Phone Number</th>
                             <th data-priority="5">Total Price</th>
                             <th data-priority="6">Order Status</th>
+                            <th></th>
                         </tr>';
         foreach($orders as $obj)
         {
             echo    '<tr class="single-order">
                         <td class="order-id">'.$obj->getId().'</td>
-                        <td>'.$obj->getOrderContents().'</td>
-                        <td>'.$obj->getDelAddress().'</td>
+                        <td class="format-text wide-col">'.$obj->getOrderContents().'</td>
+                        <td class="format-add-text wide-col">'.$obj->getDelAddress().'</td>
                         <td>'.$obj->getPhoneNumber().'</td>
                         <td>'.$obj->getTotalPrice().'</td>
                         <td class="order-status">'.$obj->getStatus().'</td>
