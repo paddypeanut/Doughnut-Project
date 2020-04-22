@@ -50,8 +50,18 @@ class Orders
      */
     private $delivered_by;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $order_date;
+
    
 
+
+    public function getOrderDate(): ?string
+    {
+        return $this->order_date;
+    }
 
     public function getId(): ?string
     {
@@ -138,6 +148,12 @@ class Orders
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+    public function setOrderDate(string $order_date): self
+    {
+        $this->order_date = $order_date;
 
         return $this;
     }

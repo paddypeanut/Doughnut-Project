@@ -13,13 +13,53 @@
 <div data-role="page" id="manager">
 	<div class="example-wrapper">
 
-		<div role="main" class="ui-content">
+		<div role="main" class="ui-content ui-body-a">
 			<h1>Manager</h1>
 			<div id="progress-orders"></div>
 
 			<div id="dispatched-orders"></div>
 
 			<div id="complete-orders"></div>
+
+			<div id="order-by-date">
+				<label for="start-date">From Month:</label>
+
+					<select id="start-date">
+					  <option value="01">January</option>
+					  <option value="02">February</option>
+					  <option value="03">March</option>
+					  <option value="04">April</option>
+					  <option value="05">May</option>
+					  <option value="06">June</option>
+					  <option value="07">July</option>
+					  <option value="08">August</option>
+					  <option value="09">September</option>
+					  <option value="10">October</option>
+					  <option value="11">November</option>
+					  <option value="12">December</option>
+					</select>
+
+	  			<label for="end-date">To Month:</label>
+
+					<select id="end-date">
+					  <option value="01">January</option>
+					  <option value="02">February</option>
+					  <option value="03">March</option>
+					  <option value="04">April</option>
+					  <option value="05">May</option>
+					  <option value="06">June</option>
+					  <option value="07">July</option>
+					  <option value="08">August</option>
+					  <option value="09">September</option>
+					  <option value="10">October</option>
+					  <option value="11">November</option>
+					  <option value="12">December</option>
+					</select>
+
+  				<button id="submit-dates">Submit</button>
+  				<div id="date-results"></div>
+
+			</div>
 			
 		</div>
 		<!-- /content -->
@@ -51,6 +91,18 @@ $.post("/ManagersOrders", {type:'complete'}).done(function(data){
 })
 
 
+$('#submit-dates').on('click', function(event){
+	var startDate = $('#start-date').children("option:selected").val();
+	var endDate = $('#end-date').children("option:selected").val();
+
+	console.log(startDate);
+	console.log(endDate);
+
+	$.post("/ManagersOrders", {type:'filterdates' , start:startDate , end:endDate}).done(function(data){
+		$('#date-results').html(data);
+	});
+});
+
 function replaceComma(x){
 	$('.single-order').each(function(){
 		var oldText = $(this).closest('tr').find(x).html();
@@ -59,5 +111,14 @@ function replaceComma(x){
 		$(this).closest('.single-order').find(x).html(newText);
 	})
 }
+
+function formatDate(x){
+	var y = x.split('-');
+	var z = y[2] + '-' + y[1] + '-' +y[0].slice(-2);
+
+	return z;
+}
+
+
 </script>
 {% endblock %}

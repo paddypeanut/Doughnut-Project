@@ -22,10 +22,12 @@ class DatabaseData extends AbstractController
         	$repository = $this->getDoctrine()->getRepository(Products::class);
         	$products = $repository->findAll();
 
-        	echo '<table data-role="table" id="movie-table" data-mode="reflow" class="movei-list ui-responsive">
+        	echo '<table data-role="table" id="movie-table" data-mode="reflow" class="movei-list ui-responsive width-100">
       					<tr>
       						<th data-priority="1">Product</th>
-     						<th colspan="4" data-priority="2">Quantity</th>
+                            <th></th>
+     						<th data-priority="2">Quantity</th>
+                            <th></th>
       						<th data-priority="3">Price</th>
       						<th data-priority="4">Total Price</th>
       					</tr>';
@@ -37,19 +39,19 @@ class DatabaseData extends AbstractController
         						<button class="min ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-btn-icon-notext  ui-icon-minus">minus</button>
         					</td>
         					<td>
-        						<input min="0" class="qty-box" type="text" size="5" value="0">
+        						<input min="0" class="qty-box" type="text" size="2" value="0">
         					</td>
         					<td>
         						<button class="plus ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-btn-icon-notext  ui-icon-plus">plus</button>
         					</td>
-        					<td class="price" value="'.$obj->getPPrice().'">€'.$obj->getPPrice().'<td>
+        					<td class="price" value="'.$obj->getPPrice().'">€'.$obj->getPPrice().'</td>
         					<td>
-        						<input type="text" value="0" class="total-price" size="5">
+        						<input type="text" value="0" class="total-price" size="2">
         					</td>
         				</tr>';
         }
         echo '</table>
-        		<br>Total Price : <input type="text" size="5" id="total-sum" value="0">';
+        		<br>Total Price : <input type="text" size="3" id="total-sum" value="0">';
 
         return new Response();
     }

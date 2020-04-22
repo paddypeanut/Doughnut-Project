@@ -8,7 +8,9 @@ use App\Entity\Login;
 use App\Entity\Products;
 use App\Entity\Orders;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;        
+use Symfony\Component\HttpFoundation\Response; 
+use Doctrine\ORM\Query\ResultSetMapping;
+      
         
 class ManagersOrders extends AbstractController
 {
@@ -131,6 +133,57 @@ class ManagersOrders extends AbstractController
             $cancelOrder = $repository->findOneBy(['id' => $cancelId]);
             $entityManager->remove($cancelOrder);
             $entityManager->flush();
+        }
+
+        else if($type == 'filterdates')
+        {
+            $startDate = $request->request->get('start', 'start date');
+            $endDate = $request->request->get('end','end date');
+
+            
+            $query = $entityManager->createQuery(
+                "SELECT p
+                                FROM App\Entity\Orders p
+                                WHERE p.order_date
+                                BETWEEN :startdate
+                                AND :enddate"
+                
+            );
+            $query->setParameter('startdate', $startDate);
+            $query->setParameter('enddate',$endDate);    
+            $orders = $query->getResult();
+
+            if($orders)
+            {
+                 echo '<table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive">
+                        <tr>
+                            <th data-priority="1">Order id</th>
+                            <th data-priority="2">Order</th>
+                            <th data-priority="3">Delivery Address</th>
+                            <th data-priority="4">Phone Number</th>
+                            <th data-priority="5">Total Price</th>
+                            <th data-priority="6">Order Status</th>
+                        </tr>';
+                        foreach($orders as $obj)
+                        {
+                            echo    '<tr class="single-order">
+                                        <td class="order-id">'.$obj->getId().'</td>
+                                        <td class="wide-col format-text ">'.$obj->getOrderContents().'</td>
+                                        <td class="format-add-text wide-col">'.$obj->getDelAddress().'</td>
+                                        <td>'.$obj->getPhoneNumber().'</td>
+                                        <td>'.$obj->getTotalPrice().'</td>
+                                        <td class="order-status">'.$obj->getStatus().'</td>
+                                    </tr>';
+                        }
+                        echo '</table>';
+            }
+            else
+            {
+                echo 'No orders in month range.';
+            }
+
+            
+
         }
 
         

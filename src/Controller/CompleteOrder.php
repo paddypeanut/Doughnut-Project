@@ -26,6 +26,7 @@ class CompleteOrder extends AbstractController
         $total = $request->request->get('total','total');
         $phone = $request->request->get('ph', 'Phone Number');
 
+
           
          $entityManager = $this->getDoctrine()->getManager();
 
@@ -39,6 +40,7 @@ class CompleteOrder extends AbstractController
                 $order->setDelAddress($address);
                 $order->setPhoneNumber($phone);
                 $order->setDeliveredBy('0');
+                $order->setOrderDate(date("m"));
 
                 $entityManager->persist($order);
 
